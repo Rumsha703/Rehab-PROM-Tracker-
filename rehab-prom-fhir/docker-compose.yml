@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: prom
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: prom
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prom"]
+      interval: 5s
+      retries: 10
+  api:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql+psycopg://prom:${POSTGRES_PASSWORD:-change-me}@db:5432/prom
+      PATIENT_API_KEY: ${PATIENT_API_KEY:-dev-patient-key}
+      CLINICIAN_API_KEY: ${CLINICIAN_API_KEY:-dev-clinician-key}
+    ports: ["8000:8000"]
+volumes:
+  pgdata:

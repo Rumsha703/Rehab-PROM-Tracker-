@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rehab PROM tracker (demo)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header>
+    <h1>Rehab PROM tracker</h1>
+    <p class="notice" role="note">Demo only. Not a medical device. Do not enter real patient data.</p>
+  </header>
+  <main id="main">
+    <section aria-labelledby="patient-h">
+      <h2 id="patient-h">Patient: weekly progress check</h2>
+      <form id="patient-form" novalidate>
+        <div class="row">
+          <label for="p-id">Patient ID (pseudonymous)</label>
+          <input id="p-id" name="patient" autocomplete="off" required pattern="[A-Za-z0-9\-]{1,64}" value="demo-001">
+        </div>
+        <div class="row">
+          <label for="p-key">Patient API key</label>
+          <input id="p-key" type="password" autocomplete="off" value="dev-patient-key">
+        </div>
+        <div id="items"></div>
+        <button type="submit">Submit answers</button>
+      </form>
+      <p id="p-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section aria-labelledby="clin-h">
+      <h2 id="clin-h">Clinician: patient summary</h2>
+      <form id="clin-form" novalidate>
+        <div class="row">
+          <label for="c-id">Patient ID</label>
+          <input id="c-id" autocomplete="off" required pattern="[A-Za-z0-9\-]{1,64}" value="demo-001">
+        </div>
+        <div class="row">
+          <label for="c-key">Clinician API key</label>
+          <input id="c-key" type="password" autocomplete="off" value="dev-clinician-key">
+        </div>
+        <button type="submit">Load summary</button>
+      </form>
+      <p id="c-status" role="status" aria-live="polite"></p>
+      <div id="chart-wrap" hidden>
+        <h3>Total score over time (lower is better)</h3>
+        <svg id="chart" role="img" aria-label="Line chart of total scores" viewBox="0 0 320 120"></svg>
+        <table id="series"><caption>Responses</caption>
+          <thead><tr><th scope="col">Date</th><th scope="col">Total (0 to 20)</th><th scope="col">Review</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
